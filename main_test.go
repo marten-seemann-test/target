@@ -13,3 +13,7 @@ func TestRandomSleep(t *testing.T) {
 	fmt.Println("Sleeping for", d)
 	time.Sleep(d)
 }
+
+func TestAdd(t *testing.T) {
+	add(1, 2)
+}
