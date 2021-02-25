@@ -14,7 +14,6 @@ func TestRandomSleep(t *testing.T) {
 	time.Sleep(d)
 }
 
-
 func TestAdd(t *testing.T) {
-  add(1, 2)
+	add(1, 2)
 }

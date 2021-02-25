@@ -7,7 +7,6 @@ func main() {
 	fmt.Println("bye")
 }
 
-
-func add(i,j int) int {
-  return i+j
+func add(i, j int) int {
+	return i + j
 }
