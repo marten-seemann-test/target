@@ -9,7 +9,7 @@ jobs:
     name: Go checks
     steps:
       - uses: actions/checkout@v2
-      - uses: WillAbides/setup-go-faster@34c5f5ac9e57768758df0a2ef40b598b3572b11b
+      - uses: actions/setup-go@v2
         with:
           go-version: "1.16.x"
       - run: go vet ./...
