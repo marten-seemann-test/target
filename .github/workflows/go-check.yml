@@ -21,4 +21,4 @@ jobs:
         if: ${{ success() || failure() }}
         run: |
           set -o pipefail
-          staticcheck ./... | sed -e "s/\(.*\)\.go/.\/\1.go/g"
+          staticcheck ./... | sed -e 's@\(.*\)\.go@./\1.go@g'
