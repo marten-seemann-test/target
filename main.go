@@ -1,8 +1,8 @@
 package main
 
 import (
-	"sync"
 	"fmt"
+	"sync"
 )
 
 func main() {
@@ -11,7 +11,10 @@ func main() {
 }
 
 func mult(a, b int) int {
-	var l sync.Mutex
+	var lock sync.Mutex
+
+	l := lock
+
 	l.Lock()
 	l.Unlock()
 
