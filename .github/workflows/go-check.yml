@@ -23,7 +23,7 @@ jobs:
           diff go.sum go.sum.orig
       - name: go fmt
         if: ${{ success() || failure() }} # run this step even if the previous one failed
-        run: gofmt -l .
+        run: gofmt -l . | awk '{print "./" $0 ":0"}'
       - name: go vet
         if: ${{ success() || failure() }} # run this step even if the previous one failed
         run: go vet ./...
