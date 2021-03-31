@@ -26,7 +26,7 @@ jobs:
         run: |
           out=$(gofmt -l .)
           if [[ -n "$out" ]]; then
-            echo $out
+            echo $out | awk '{print "./" $0 ":0"}'
             exit 1
           fi
       - name: go vet
