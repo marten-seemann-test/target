@@ -25,9 +25,8 @@ jobs:
         if: ${{ success() || failure() }} # run this step even if the previous one failed
         run: |
           out=$(gofmt -l .)
-          echo $out
-          if [[ -z "$out" ]]; then
-            echo "gofmt error"
+          if [[ -n "$out" ]]; then
+            echo $out
             exit 1
           fi
       - name: go vet
