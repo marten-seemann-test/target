@@ -26,7 +26,7 @@ jobs:
         run: |
           out=$(gofmt -l .)
           if [[ -n "$out" ]]; then
-            echo $out | awk '{print "./" $0 ":0"}'
+            echo $out | awk '{print "error file=" $0 ",line=0,col=0"}::File is not gofmt-ed.'
             exit 1
           fi
       - name: go vet
