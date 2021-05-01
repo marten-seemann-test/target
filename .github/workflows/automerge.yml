@@ -17,13 +17,14 @@ jobs:
         fetch-depth: 0
     - run: git branch
     - run: git branch -r
-    - run: git rev-list --first-parent origin/${{ github.event.pull_request.base.ref }}..HEAD
+    - run: echo ${{ github.event.pull_request.head.sha }}
+    - run: git rev-list --first-parent origin/${{ github.event.pull_request.base.ref }}..${{ github.event.pull_request.head.sha }}
     - name: Check if we should automerge
       id: should_automerge
       env:
         GITHUB_EMAIL: "web3-bot@users.noreply.github.com"
       run: |
-        git rev-list --first-parent origin/${{ github.event.pull_request.base.ref }}..HEAD | while read commit; do
+        git rev-list --first-parent origin/${{ github.event.pull_request.base.ref }}..${{ github.event.pull_request.head.sha }} | while read commit; do
           echo $commit
           committer=$(git show --format=$'%ce' -s $commit)
           echo "Committer: $committer"
