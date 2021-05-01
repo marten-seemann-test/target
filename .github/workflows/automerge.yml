@@ -10,6 +10,9 @@ jobs:
     # if: github.event.pull_request.user.login == 'ipldbot'
     runs-on: ubuntu-latest
     steps:
+    - name: Event JSON
+      run: cat "$GITHUB_EVENT_PATH" | jq -M .
+    - uses: actions/checkout@v2
     - name: Check if we should automerge
       id: should_automerge
       env:
