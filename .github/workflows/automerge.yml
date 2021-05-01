@@ -21,7 +21,8 @@ jobs:
         GITHUB_EMAIL: "web3-bot@users.noreply.github.com"
       run: |
         git rev-parse HEAD || true
-        git rev-list --first-parent ${{ github.event.pull_request.base.ref }}..HEAD | while read commit; do
+        git branch
+        git rev-list --first-parent origin/${{ github.event.pull_request.base.ref }}..HEAD | while read commit; do
           echo $commit
           committer=$(git show --format=$'%ce' -s $commit)
           echo "Committer: $committer"
