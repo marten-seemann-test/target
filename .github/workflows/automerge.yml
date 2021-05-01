@@ -24,16 +24,21 @@ jobs:
       env:
         GITHUB_EMAIL: "web3-bot@users.noreply.github.com"
       run: |
-        git rev-list --first-parent origin/${{ github.event.pull_request.base.ref }}..${{ github.event.pull_request.head.sha }} | while read commit; do
+        echo "::set-output name=action_fruit::strawberry"
+        for commit in $(git rev-list --first-parent origin/${{ github.event.pull_request.base.ref }}..${{ github.event.pull_request.head.sha }}); do
           echo $commit
           committer=$(git show --format=$'%ce' -s $commit)
           echo "Committer: $committer"
           if [[ "$committer" != "${{ env.GITHUB_EMAIL }}" ]]; then
+            echo "setting to false"
             echo "::set-output name=status::false"
             exit
           fi
-          echo "::set-output name=status::true"
         done
+        echo "setting to true"
+        echo "::set-output name=status::true"
+    - run: echo ${{ steps.should_automerge.outputs.action_fruit }}
+    - run: echo ${{ steps.should_automerge.outputs.status }}
     - name: Wait on tests
       if: steps.should_automerge.status
       uses: lewagon/wait-on-check-action@bafe56a6863672c681c3cf671f5e10b20abf2eaa # v0.2
