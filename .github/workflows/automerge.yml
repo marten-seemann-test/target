@@ -14,16 +14,14 @@ jobs:
       run: cat "$GITHUB_EVENT_PATH" | jq -M .
     - uses: actions/checkout@v2
       with:
-        ref: ${{ github.event.pull_request.base.ref }}
-    - uses: actions/checkout@v2
+        fetch-depth: 0
     - name: Check if we should automerge
       id: should_automerge
       env:
         GITHUB_EMAIL: "web3-bot@users.noreply.github.com"
       run: |
         git rev-parse HEAD || true
-        git rev-parse master || true
-        git rev-list --first-parent origin/${{ github.event.pull_request.base.ref }}..HEAD | while read commit; do
+        git rev-list --first-parent ${{ github.event.pull_request.base.ref }}..HEAD | while read commit; do
           echo $commit
           committer=$(git show --format=$'%ce' -s $commit)
           echo "Committer: $committer"
