@@ -1,0 +1,3 @@
+package target
+
+panic("bye")
