@@ -23,6 +23,12 @@ jobs:
         run: |
           go version
           go env
+      - name: Test (@v1.1)
+        uses: protocol/multiple-go-modules@v1.1
+        with:
+          run: |
+            pwd
+            ls -al
       - name: Test (without working directory)
         uses: protocol/multiple-go-modules@e6006a0cb8e7461390e890a813ef7de7d5456f0b
         with:
