@@ -24,20 +24,20 @@ jobs:
           go version
           go env
       - name: Test (without working directory)
-        uses: protocol/multiple-go-modules@80886b0f5507679c061a91887b73133305a411bf
+        uses: protocol/multiple-go-modules@2e883a3a6ec6909d93fc3bf0426da208132640ff
         with:
           run: |
             pwd
             ls -al
       - name: "Test (working directory: .)"
-        uses: protocol/multiple-go-modules@80886b0f5507679c061a91887b73133305a411bf
+        uses: protocol/multiple-go-modules@2e883a3a6ec6909d93fc3bf0426da208132640ff
         with:
           working-directory: "."
           run: |
             pwd
             ls -al
       - name: "Test (working directory: v2)"
-        uses: protocol/multiple-go-modules@80886b0f5507679c061a91887b73133305a411bf
+        uses: protocol/multiple-go-modules@2e883a3a6ec6909d93fc3bf0426da208132640ff
         with:
           working-directory: "./v2"
           run: |
