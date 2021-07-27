@@ -1,0 +1,46 @@
+on: [push, pull_request]
+name: Go Test
+
+jobs:
+  unit:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ "ubuntu", "windows", "macos" ]
+        go: [ "1.15.x", "1.16.x" ]
+    env:
+      COVERAGES: ""
+    runs-on: ${{ matrix.os }}-latest
+    name: ${{ matrix.os}} (go ${{ matrix.go }})
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - uses: actions/setup-go@v2
+        with:
+          go-version: ${{ matrix.go }}
+      - name: Go information
+        run: |
+          go version
+          go env
+      - name: Test (without working directory)
+        uses: protocol/multiple-go-modules@80886b0f5507679c061a91887b73133305a411bf
+        with:
+          run: |
+            pwd
+            ls -al
+      - name: "Test (working directory: .)"
+        uses: protocol/multiple-go-modules@80886b0f5507679c061a91887b73133305a411bf
+        with:
+          working-directory: "."
+          run: |
+            pwd
+            ls -al
+      - name: "Test (working directory: v2)"
+        uses: protocol/multiple-go-modules@80886b0f5507679c061a91887b73133305a411bf
+        with:
+          working-directory: "./v2"
+          run: |
+            pwd
+            ls -al
+     
