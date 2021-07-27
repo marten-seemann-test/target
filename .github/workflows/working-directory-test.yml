@@ -30,20 +30,20 @@ jobs:
             pwd
             ls -al
       - name: Test (without working directory)
-        uses: protocol/multiple-go-modules@e67df595588f12f60e9d520cd548e6393688a850
+        uses: protocol/multiple-go-modules@a6aa2b4eba2a9922ac8a4f93bdb11bdb24e36a2a
         with:
           run: |
             pwd
             ls -al
       - name: "Test (working directory: .)"
-        uses: protocol/multiple-go-modules@e67df595588f12f60e9d520cd548e6393688a850
+        uses: protocol/multiple-go-modules@a6aa2b4eba2a9922ac8a4f93bdb11bdb24e36a2a
         with:
           working-directory: "."
           run: |
             pwd
             ls -al
       - name: "Test (working directory: v2)"
-        uses: protocol/multiple-go-modules@e67df595588f12f60e9d520cd548e6393688a850
+        uses: protocol/multiple-go-modules@a6aa2b4eba2a9922ac8a4f93bdb11bdb24e36a2a
         with:
           working-directory: "./v2"
           run: |
