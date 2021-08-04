@@ -21,7 +21,8 @@ jobs:
         run: cat "$GITHUB_EVENT_PATH" | jq -M .
       - name: Find tag
         run: |
-          IFS='/'; split=("${{ github.event.ref }}"); unset IFS;
+          ref="${{ github.event.ref }}"
+          IFS='/'; split=($ref); unset IFS;
           tag=${split[2]}
           echo "Tag: $tag"
           git tag -d "$tag"
