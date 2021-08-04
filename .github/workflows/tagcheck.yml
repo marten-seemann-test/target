@@ -30,6 +30,8 @@ jobs:
         run: go install golang.org/x/exp/cmd/gorelease@v0.0.0-20210729172720-737cce5152fc
       - name: Debug
         run: cat "$GITHUB_EVENT_PATH" | jq -M .
+      - name: run gorelease
+        run: gorelease
       - name: Find tag
         run: |
           ref="${{ github.event.ref }}"
