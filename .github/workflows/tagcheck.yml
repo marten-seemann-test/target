@@ -18,3 +18,8 @@ jobs:
         run: go install golang.org/x/exp/cmd/gorelease@v0.0.0-20210729172720-737cce5152fc
       - name: Debug
         run: cat "$GITHUB_EVENT_PATH" | jq -M .
+      - run: |
+          ref="${{ github.event.ref }}"
+          echo $ref
+          IFS='/'; split=($IN); unset IFS;
+          echo ${split[2]}
