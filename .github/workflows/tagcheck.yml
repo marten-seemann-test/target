@@ -9,6 +9,15 @@ jobs:
     name: All
     steps:
       - uses: actions/checkout@v2
+        repository: fsaintjacques/semver-tool@20028cb53f340a300b460b423e43f0eac13bcd9a # v3.2.0
+        path: semver-tool
+      - name: Install semver-tool
+        run: |
+          cd semver-tool
+          make install
+          cd ..
+          rm -rf semver-tool
+      - uses: actions/checkout@v2
         with:
           submodules: recursive
       - uses: actions/setup-go@v2
@@ -27,3 +36,10 @@ jobs:
           echo "Tag: $tag"
           git tag -d "$tag"
           suggested=$(gorelease | grep Suggested | sed "s/Suggested version: //")
+          echo "gorelease suggested: $suggested"
+          comp=$(semver compare "$tag" "$suggested")
+          echo "comp: $comp"
+          if [[ "$comp" == "-1" ]]; then
+            echo "wrong tagging"
+            exit 1
+          fi
