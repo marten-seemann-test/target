@@ -9,8 +9,9 @@ jobs:
     name: All
     steps:
       - uses: actions/checkout@v2
-        repository: fsaintjacques/semver-tool@20028cb53f340a300b460b423e43f0eac13bcd9a # v3.2.0
-        path: semver-tool
+        with:
+          repository: fsaintjacques/semver-tool@20028cb53f340a300b460b423e43f0eac13bcd9a # v3.2.0
+          path: semver-tool
       - name: Install semver-tool
         run: |
           cd semver-tool
