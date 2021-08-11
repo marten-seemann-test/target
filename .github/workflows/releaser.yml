@@ -16,19 +16,38 @@ jobs:
     env:
       VERSION: ""
     steps:
-      - name: debug GITHUB_EVENT_PATH
-        run: cat "$GITHUB_EVENT_PATH" | jq -M .
-      - name: debug GITHUB_REF
-        run: cat "$GITHUB_REF" | jq -M .
+      - uses: actions/checkout@v2
+        with:
+          repository: fsaintjacques/semver-tool
+          ref: 20028cb53f340a300b460b423e43f0eac13bcd9a # v3.2.0
+          path: semver-tool
+      - name: Install semver-tool
+        run: |
+          cd semver-tool
+          make install
+          cd ..
+          rm -rf semver-tool
+      - uses: actions/setup-go@v2
+        with:
+          go-version: "1.16.x"
+      - name: Install gorelease
+        run: go install golang.org/x/exp/cmd/gorelease@v0.0.0-20210729172720-737cce5152fc
       - uses: actions/checkout@v2
       - name: Determine version
         run: |
           v=$(jq -r .version version.json)
           echo $v
           echo "VERSION=$v" >> $GITHUB_ENV
-      - run: echo ${{ github.event_name }}
-      - run: echo ${{ github.head_ref }}
-      - run: echo ${{ github.event.repository.default_branch }}
+      - name: "check suggested version against gorelease"
+        run: |
+          suggested=$(gorelease | grep Suggested | sed "s/Suggested version: //")
+          echo "gorelease suggested: $suggested"
+          comp=$(semver compare "${{ env.VERSION }}" "$suggested")
+          echo "comp: $comp"
+          if [[ "$comp" == "-1" ]]; then
+            echo "Need a higher version number. Gorelease suggested $suggested"
+            exit 1
+          fi
       - name: Create release
         if: ${{ github.event_name == 'push' }}
         run: |
