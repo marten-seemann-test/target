@@ -1,0 +1,12 @@
+on:
+  push:
+    paths:
+      - 'version.json'
+    branches:
+      - master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo hello
