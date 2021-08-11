@@ -26,6 +26,9 @@ jobs:
           v=$(jq -r .version version.json)
           echo $v
           echo "VERSION=$v" >> $GITHUB_ENV
+      - run: echo ${{ github.event_name }}
+      - run: echo ${{ github.head_ref }}
+      - run: echo ${{ github.event.repository.default_branch }}
       - name: Create release
         if: ${{ github.event_name }} == "push" && ${{ github.head_ref }} == ${{ github.event.repository.default_branch }}
         run: |
