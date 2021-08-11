@@ -1,7 +1,7 @@
 on:
   push:
     paths:
-      - 'version.json'
+      - 'test.json'
     branches:
       - master
 
