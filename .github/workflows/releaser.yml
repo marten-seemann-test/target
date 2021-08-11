@@ -1,14 +1,8 @@
 on:
   push:
-    branches: 
-      - master
-      - main
     paths:
       - 'version.json'
   pull_request:
-    branches: 
-      - master
-      - main
     paths:
       - 'version.json'
 
@@ -18,6 +12,10 @@ jobs:
     env:
       VERSION: ""
     steps:
+      - name: debug GITHUB_EVENT_PATH
+        run: cat "$GITHUB_EVENT_PATH" | jq -M .
+      - name: debug GITHUB_REF
+        run: cat "$GITHUB_REF" | jq -M .
       - uses: actions/checkout@v2
       - name: Create release
         run: |
