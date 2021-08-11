@@ -8,6 +8,7 @@ on:
 
 jobs:
   releaser:
+    if: ${{ github.event_name }} == "pull_request" && ${{ github.base_ref }} == ${{ github.event.repository.default_branch }}
     runs-on: ubuntu-latest
     env:
       VERSION: ""
