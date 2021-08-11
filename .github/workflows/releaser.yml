@@ -42,10 +42,9 @@ jobs:
         run: |
           suggested=$(gorelease | grep Suggested | sed "s/Suggested version: //")
           echo "gorelease suggested: $suggested"
-          comp=$(semver compare "${{ env.VERSION }}" "$suggested")
-          echo "comp: $comp"
-          if [[ "$comp" == "-1" ]]; then
+          if [[ $(semver compare "${{ env.VERSION }}" "$suggested") == "-1" ]]; then
             echo "Need a higher version number. Gorelease suggested $suggested"
+            echo "::error file=version.json,line=2,col=1::gorelease says we need at least $suggested"
             exit 1
           fi
       - name: Create release
