@@ -2,6 +2,9 @@ on:
   push:
     paths:
       - 'version.json'
+  pull_request:
+    paths:
+      - 'version.json'
 
 jobs:
   releaser:
@@ -14,5 +17,9 @@ jobs:
         run: |
           v=$(jq -r .version version.json)
           echo $v
-          git tag $v
+          echo "VERSION=$v" >> $GITHUB_ENV
+      - name: Create release
+        if: ${{ github.event_name }} == "push"
+        run: |
+          git tag ${{ env.VERSION }}
           git push --tags 
