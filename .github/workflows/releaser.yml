@@ -1,0 +1,18 @@
+on:
+  push:
+    paths:
+      - 'version.json'
+
+jobs:
+  releaser:
+    runs-on: ubuntu-latest
+    env:
+      VERSION: ""
+    steps:
+      - uses: actions/checkout@v2
+      - name: Create release
+        run: |
+          v=$(jq -r .version version.json)
+          echo $v
+          git tag $v
+          git push --tags 
