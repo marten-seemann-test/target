@@ -2,16 +2,16 @@ on:
   push:
     paths:
       - 'version.json'
+    branches:
+      - master
   pull_request:
     paths:
       - 'version.json'
+    branches:
+      - master
 
 jobs:
   releaser:
-    # run if:
-    # 1. This is a PR targeting the default branch, OR
-    # 2. This is a commit on the default branch.
-    if: ${{ (github.event_name == 'pull_request' && github.base_ref == github.event.repository.default_branch) || (github.event_name == 'push' && github.head_ref == github.event.repository.default_branch) }}
     runs-on: ubuntu-latest
     env:
       VERSION: ""
