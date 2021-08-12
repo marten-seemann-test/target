@@ -1,0 +1,13 @@
+runs:
+  using: "composite"
+  steps:
+    - name: Check that go.mod is tidy
+      uses: protocol/multiple-go-modules@v1.0
+      with:
+        run: |
+          go mod tidy
+          if [[ -n $(git ls-files --other --exclude-standard --directory -- go.sum) ]]; then
+            echo "go.sum was added by go mod tidy"
+            exit 1
+          fi
+          git diff --exit-code -- go.sum go.mod
