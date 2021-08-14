@@ -20,7 +20,10 @@ jobs:
         run: echo "HIGHESTRELEASED=$(go list -m -versions | tr " " "\n" | tail -n 1)" >> $GITHUB_ENV
       - name: Run gorelease
         id: gorelease
-        run: echo "GORELEASE=\"$(gorelease || true)\"" >> $GITHUB_ENV
+        run: |
+          output=$(gorelease || true)
+          echo $output
+          echo "GORELEASE=$output" >> $GITHUB_ENV
       - name: Run gorelease (debug)
         run: gorelease || true
       - name: output
