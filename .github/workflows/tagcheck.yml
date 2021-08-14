@@ -8,42 +8,4 @@ jobs:
     runs-on: ubuntu-latest
     name: All
     steps:
-      - uses: actions/checkout@v2
-        with:
-          repository: fsaintjacques/semver-tool
-          ref: 20028cb53f340a300b460b423e43f0eac13bcd9a # v3.2.0
-          path: semver-tool
-      - name: Install semver-tool
-        run: |
-          cd semver-tool
-          make install
-          cd ..
-          rm -rf semver-tool
-      - uses: actions/checkout@v2
-        with:
-          submodules: recursive
-      - uses: actions/setup-go@v2
-        with:
-          stable: 'false'
-          go-version: "1.16.x"
-      - name: Install gorelease
-        run: go install golang.org/x/exp/cmd/gorelease@v0.0.0-20210729172720-737cce5152fc
-      - name: Debug
-        run: cat "$GITHUB_EVENT_PATH" | jq -M .
-      - name: run gorelease
-        run: gorelease
-      - name: Find tag
-        run: |
-          ref="${{ github.event.ref }}"
-          IFS='/'; split=($ref); unset IFS;
-          tag=${split[2]}
-          echo "Tag: $tag"
-          git tag -d "$tag"
-          suggested=$(gorelease | grep Suggested | sed "s/Suggested version: //")
-          echo "gorelease suggested: $suggested"
-          comp=$(semver compare "$tag" "$suggested")
-          echo "comp: $comp"
-          if [[ "$comp" == "-1" ]]; then
-            echo "wrong tagging"
-            exit 1
-          fi
+      - run: cat "$GITHUB_EVENT_PATH" | jq -M .
