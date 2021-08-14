@@ -26,6 +26,8 @@ jobs:
           echo "::set-output name=result::$output"
       - name: Run gorelease (debug)
         run: gorelease || true
+      - name: output
+        run: echo ${{ steps.gorelease.outputs.result }}
       - uses: marocchino/sticky-pull-request-comment@v2
         with:
           header: test
