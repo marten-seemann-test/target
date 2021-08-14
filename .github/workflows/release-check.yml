@@ -21,9 +21,12 @@ jobs:
       - name: Run gorelease
         id: gorelease
         run: |
-          output="$(gorelease || true)"
-          echo "$output"
-          echo "GORELEASE=\"$output\"" >> $GITHUB_ENV
+          output=$(gorelease || true)
+          # dealing with multi-line strings in GitHub Actions is a pain
+          output="${output//'%'/'%25'}"
+          output="${output//$'\n'/'%0A'}"
+          output="${output//$'\r'/'%0D'}"
+          echo "GORELEASE=$output" >> $GITHUB_ENV
       - name: Run gorelease (debug)
         run: gorelease || true
       - name: output
