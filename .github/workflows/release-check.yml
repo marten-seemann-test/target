@@ -19,9 +19,11 @@ jobs:
         run: go install golang.org/x/exp/cmd/gorelease@v0.0.0-20210729172720-737cce5152fc
       - name: Determine highest released version
         run: echo "HIGHESTRELEASED=$(go list -m -versions | tr " " "\n" | tail -n 1)" >> $GITHUB_ENV
-      - name: Run gorrelease
+      - name: Run gorelease
         id: gorelease
         run: echo "::set-output name=result::$(gorelease)"
+      - name: Run gorelease (debug)
+        run: gorelease
       - uses: marocchino/sticky-pull-request-comment@v2
         with:
           header: test
