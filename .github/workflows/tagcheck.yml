@@ -7,5 +7,22 @@ jobs:
   unit:
     runs-on: ubuntu-latest
     name: All
+    env:
+      TAGNAME: ""
     steps:
       - run: cat "$GITHUB_EVENT_PATH" | jq -M .
+      - name: extract tag name
+        run: |
+          tagname=$(echo "${{ github.ref }}" | sed "s/refs\/tags\///")
+          echo $tagnmae
+          echo "TAGNAME=$tagname" >> $GITHUB_ENV
+      - name: create an issue
+        if: ${{ github.event.pusher != "web3-bot" }}
+        uses: JasonEtco/create-an-issue@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          filename: .github/workflows/tagpush.md
+      - name: fail build if push wasn't done by web3-bot
+        if: ${{ github.event.pusher != "web3-bot" }}
+        run: exit 1
