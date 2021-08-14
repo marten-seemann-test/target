@@ -8,8 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       HIGHESTRELEASED: ""
-    outputs:
-      gorelease: ${{ steps.gorelease.outputs.result }}
+      GORELEASE: ""
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-go@v2
@@ -19,9 +18,18 @@ jobs:
         run: go install golang.org/x/exp/cmd/gorelease@v0.0.0-20210729172720-737cce5152fc
       - name: Determine highest released version
         run: echo "HIGHESTRELEASED=$(go list -m -versions | tr " " "\n" | tail -n 1)" >> $GITHUB_ENV
-      - name: Run gorrelease
+      - name: Run gorelease
         id: gorelease
-        run: echo "::set-output name=result::$(gorelease)"
+        run: |
+          output=$(gorelease || true)
+          # dealing with multi-line strings in GitHub Actions is a pain
+          echo "GORELEASE<<EOF" >> $GITHUB_ENV
+          echo "$output" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+      - name: Run gorelease (debug)
+        run: gorelease || true
+      - name: output
+        run: echo "${{ env.GORELEASE }}"
       - uses: marocchino/sticky-pull-request-comment@v2
         with:
           header: test
@@ -31,6 +39,6 @@ jobs:
 
             `gorelease` says:
             ```
-            ${{ steps.gorelease.outputs.result }}
+            ${{ env.GORELEASE }}
             ```
 
