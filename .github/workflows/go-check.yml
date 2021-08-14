@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     name: All
     env:
-      CONFIG: ""
+      RUNGOGENERATE: false
     steps:
       - uses: actions/checkout@v2
         with:
@@ -20,7 +20,10 @@ jobs:
           go-version: "1.17.0-rc1"
       - name: Read config
         if: hashFiles('./.github/workflows/go-check-config.json') != ''
-        run: echo "CONFIG=$(jq -rc . ./.github/workflows/go-check-config.json)" >> $GITHUB_ENV
+        run: |
+          if [[ $(jq -r .gogenerate ./.github/workflows/go-check-config.json) == "true" ]]; then
+            echo "RUNGOGENERATE=true" >> $GITHUB_ENV
+          fi
       - name: Install staticcheck
         run: go install honnef.co/go/tools/cmd/staticcheck@434f5f3816b358fe468fa83dcba62d794e7fe04b # 2021.1 (v0.2.0)
       - name: Check that go.mod is tidy
@@ -53,8 +56,7 @@ jobs:
           run: |
             set -o pipefail
             staticcheck ./... | sed -e 's@\(.*\)\.go@./\1.go@g'
-      - run: echo ${{ env.CONFIG }}
       - name: go generate
-        if: ${{ env.CONFIG != "" && fromJson(env.CONFIG).gogenerate }}
+        if: ${{ env.RUNGOGENERATE }}
         run: echo "pretend to run go generate"
 
