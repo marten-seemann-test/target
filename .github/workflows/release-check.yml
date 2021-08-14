@@ -1,0 +1,36 @@
+on:
+  pull_request:
+    paths: [ 'version.json' ]
+    branches: [ master ]
+
+jobs:
+  releaser:
+    runs-on: ubuntu-latest
+    env:
+      HIGHESTRELEASED: ""
+    outputs:
+      gorelease: ${{ steps.gorelease.outputs.result }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: "1.16.x"
+      - name: Install gorelease
+        run: go install golang.org/x/exp/cmd/gorelease@v0.0.0-20210729172720-737cce5152fc
+      - name: Determine highest released version
+        run: echo "HIGHESTRELEASED=$(go list -m -versions | tr " " "\n" | tail -n 1)" >> $GITHUB_ENV
+      - name: Run gorrelease
+        id: gorelease
+        run: echo "::set-output name=result::$(gorelease)"
+      - uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: test
+          recreate: true
+          message: |
+            Most recent release is: ${{ env.HIGHESTRELEASED }}
+
+            `gorelease` says:
+            ```
+            ${{ steps.gorelease.outputs.result }}
+            ```
+

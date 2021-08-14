@@ -1,14 +1,7 @@
 on:
   push:
-    paths:
-      - 'version.json'
-    branches:
-      - master
-  pull_request:
-    paths:
-      - 'version.json'
-    branches:
-      - master
+    paths: [ 'version.json' ]
+    branches: [ master ]
 
 jobs:
   releaser:
@@ -16,39 +9,10 @@ jobs:
     env:
       VERSION: ""
     steps:
-      - uses: actions/checkout@v2
-        with:
-          repository: fsaintjacques/semver-tool
-          ref: 20028cb53f340a300b460b423e43f0eac13bcd9a # v3.2.0
-          path: semver-tool
-      - name: Install semver-tool
-        run: |
-          cd semver-tool
-          make install
-          cd ..
-          rm -rf semver-tool
-      - uses: actions/setup-go@v2
-        with:
-          go-version: "1.16.x"
-      - name: Install gorelease
-        run: go install golang.org/x/exp/cmd/gorelease@v0.0.0-20210729172720-737cce5152fc
-      - uses: actions/checkout@v2
       - name: Determine version
-        run: |
-          v=$(jq -r .version version.json)
-          echo $v
-          echo "VERSION=$v" >> $GITHUB_ENV
-      - name: "check suggested version against gorelease"
-        run: |
-          suggested=$(gorelease | grep Suggested | sed "s/Suggested version: //")
-          echo "gorelease suggested: $suggested"
-          if [[ $(semver compare "${{ env.VERSION }}" "$suggested") == "-1" ]]; then
-            echo "Need a higher version number. Gorelease suggested $suggested"
-            echo "::error file=version.json,line=2,col=1::gorelease says we need at least $suggested"
-            exit 1
-          fi
+        run: echo "VERSION=$(jq -r .version version.json)" >> $GITHUB_ENV
       - name: Create release
-        if: ${{ github.event_name == 'push' }}
+        if: ${{ github.event_name == 'push' && env.VERSION != env.HIGHESTRELEASED }}
         run: |
           git tag ${{ env.VERSION }}
-          git push --tags 
+          git push --tags
