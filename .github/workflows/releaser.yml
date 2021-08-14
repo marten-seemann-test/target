@@ -12,7 +12,6 @@ jobs:
       - name: Determine version
         run: echo "VERSION=$(jq -r .version version.json)" >> $GITHUB_ENV
       - name: Create release
-        if: ${{ github.event_name == 'push' && env.VERSION != env.HIGHESTRELEASED }}
         run: |
           git tag ${{ env.VERSION }}
           git push --tags
