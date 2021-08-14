@@ -22,7 +22,7 @@ jobs:
         uses: JasonEtco/create-an-issue@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PUSHER: ${{ github.event.pusher }}
+          PUSHER: "${{ github.event.pusher }}"
         with:
           filename: .github/workflows/tagpush.md
       - name: fail build if push wasn't done by web3-bot
