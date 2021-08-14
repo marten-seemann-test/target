@@ -58,7 +58,7 @@ jobs:
             staticcheck ./... | sed -e 's@\(.*\)\.go@./\1.go@g'
       - name: go generate
         uses: protocol/multiple-go-modules@v1.2
-        if: ${{ env.RUNGOGENERATE }}
+        if: ${{ env.RUNGOGENERATE == 'true' }}
         with:
           run: |
             git clean -fd # make sure there aren't untracked files / directories
