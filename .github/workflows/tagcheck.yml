@@ -10,6 +10,7 @@ jobs:
     env:
       TAGNAME: ""
     steps:
+      - uses: actions/checkout@v2
       - run: cat "$GITHUB_EVENT_PATH" | jq -M .
       - name: extract tag name
         run: |
