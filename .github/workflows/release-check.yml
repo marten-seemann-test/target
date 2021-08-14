@@ -29,7 +29,7 @@ jobs:
       - name: Run gorelease (debug)
         run: gorelease || true
       - name: output
-        run: echo ${{ env.GORELEASE }}
+        run: echo "${{ env.GORELEASE }}"
       - uses: marocchino/sticky-pull-request-comment@v2
         with:
           header: test
