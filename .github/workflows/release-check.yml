@@ -23,7 +23,7 @@ jobs:
         run: |
           output="$(gorelease || true)"
           echo "$output"
-          echo "GORELEASE=$output" >> $GITHUB_ENV
+          echo "GORELEASE=\"$output\"" >> $GITHUB_ENV
       - name: Run gorelease (debug)
         run: gorelease || true
       - name: output
