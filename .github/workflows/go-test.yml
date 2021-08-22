@@ -26,7 +26,7 @@ jobs:
           go version
           go env
       - name: Run tests
-        uses: protocol/multiple-go-modules@9d21ed55ed0afd40e2b2f1c67046dacc5f2df86a
+        uses: protocol/multiple-go-modules@v1.2
         with:
           pre: echo "pre"
           post: echo "post"
