@@ -5,14 +5,4 @@ on:
 
 jobs:
   releaser:
-    runs-on: ubuntu-latest
-    env:
-      VERSION: ""
-    steps:
-      - uses: actions/checkout@v2
-      - name: Determine version
-        run: echo "VERSION=$(jq -r .version version.json)" >> $GITHUB_ENV
-      - name: Create release
-        run: |
-          git tag ${{ env.VERSION }}
-          git push --tags
+    uses: protocol/.github/.github/workflows/releaser.yml@master
