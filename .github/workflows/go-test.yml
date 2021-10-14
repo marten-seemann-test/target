@@ -26,10 +26,8 @@ jobs:
           go version
           go env
       - name: Run tests
-        uses: protocol/multiple-go-modules@v1.2
+        uses: protocol/multiple-go-modules@v1.0
         with:
-          pre: echo "pre"
-          post: echo "post"
           run: go test -v -coverprofile coverage.txt ./...
       - name: Run tests (32 bit)
         if: ${{ matrix.os != 'macos' }} # can't run 32 bit tests on OSX.
