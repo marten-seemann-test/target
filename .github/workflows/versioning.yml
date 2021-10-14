@@ -1,0 +1,5 @@
+on: [ push ]
+
+jobs:
+  version:
+    uses: marten-seemann-test/.github/.github/workflows/versioning.yml@master
