@@ -23,3 +23,7 @@ func TestMult(t *testing.T) {
 func TestAdd(t *testing.T) {
 	require.Equal(t, Add(3, 4, 5), 12)
 }
+
+func TestSubtract(t *testing.T) {
+	subtract(3, 4)
+}
