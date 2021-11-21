@@ -10,6 +10,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
       - run: echo ${{ steps.getmergedpr.outputs.title }}
+        if: steps.getmergedpr.outputs.title != ''
       - run: echo ${{ steps.getmergedpr.outputs.body }}
       - run: echo ${{ steps.getmergedpr.outputs.number }}
       - run: echo ${{ steps.getmergedpr.outputs.labels }}
